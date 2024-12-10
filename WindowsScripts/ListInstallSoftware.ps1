@@ -1,8 +1,11 @@
 # Retrieve all installed software properties
 $installedSoftware = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*", "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*"
 
-# List all properties of the retrieved software
-$installedSoftware | Select-Object *  # To view all available properties
+# Filter out entries where DisplayName or Publisher is empty or null
+$filteredSoftware = $installedSoftware | Where-Object { 
+    $_.DisplayName -and $_.Publisher 
+}
 
-# Optionally, display specific properties (e.g., DisplayName, Publisher, etc.)
-$installedSoftware | Select-Object DisplayName, DisplayVersion, Publisher >> C:\Users\sotiriadis\Documents\install_software.txt
+# Export the data to a CSV file with a semicolon delimiter
+$filteredSoftware | Select-Object DisplayName, DisplayVersion, Publisher | 
+    Export-Csv -Path "C:\Users\sotiriadis\Documents\install_software.csv" -NoTypeInformation -Force -Delimiter ";"
