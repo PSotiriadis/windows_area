@@ -1,0 +1,12 @@
+Sub TrimSpacesInSelectedCells()
+    Dim cell As Range
+    
+    ' Loop through each selected cell
+    For Each cell In Selection
+        ' Only trim cells that contain text
+        If Not IsEmpty(cell.Value) And VarType(cell.Value) = vbString Then
+            cell.Value = Trim(cell.Value)
+        End If
+    Next cell
+End Sub
+

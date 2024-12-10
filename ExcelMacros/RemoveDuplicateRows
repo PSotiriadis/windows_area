@@ -1,0 +1,21 @@
+Sub RemoveDuplicateRows()
+    Dim ws As Worksheet
+    Dim tableRange As Range
+    Dim columnToCheck As Integer
+    
+    ' Set the active sheet
+    Set ws = ActiveSheet
+    
+    ' Specify the table range
+    Set tableRange = ws.ListObjects(1).Range ' Adjust if you have multiple tables
+    
+    ' Specify the column number to check for duplicates (e.g., 1 for column A)
+    columnToCheck = 1 ' Change this to the correct column number for your table
+    
+    ' Remove duplicates based on the specified column
+    tableRange.RemoveDuplicates Columns:=columnToCheck, Header:=xlYes
+    
+    ' Notify the user
+    MsgBox "Duplicate rows removed based on column " & columnToCheck & "!", vbInformation
+End Sub
+
