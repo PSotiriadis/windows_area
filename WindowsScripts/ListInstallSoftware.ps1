@@ -7,14 +7,20 @@ $filteredSoftware = $installedSoftware | Where-Object {
     $_.DisplayName -and $_.Publisher 
 }
 
+# Specify the ethernet adapter to read the ip
+$adapterName = "Ethernet 2"
+
 # Retrieve the machine's IP address
-$ipAddress = (Test-Connection -ComputerName (hostname) -Count 1).IPv4Address.IPAddressToString
+#$ipAddress = (Test-Connection -ComputerName (hostname) -Count 1).IPv4Address.IPAddressToString
+$ipAddress = (Get-NetIPAddress -InterfaceAlias $adapterName -AddressFamily IPv4).IPAddress
+
 
 # Extract the last octet of the IP address
 $lastOctet = $ipAddress.Split('.')[-1]
-
+$pcNr = $lastOctet - 159
 # Construct the export file name using the last octet
-$exportFileNameBase = "installed_software_PC$lastOctet"
+$exportFileNameBase = "installed_software_PC" + "$pcNr" + "_" + "IP$lastOctet"
+
 
 # Full paths for the export files
 $csvFilePath = "C:\Users\sotiriadis\Documents\$exportFileNameBase.csv"
